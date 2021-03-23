@@ -11,20 +11,17 @@ on:
       - synchronize
 
 jobs:
-  install:
+  test:
     runs-on: ubuntu-latest
-    name: Install
+    name: Test
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
           node-version: '13.x'
-      - run: yarn
-
-  test:
-    runs-on: ubuntu-latest
-    name: Test
-    needs: install
-    steps:
-      - run: yarn lint
-      - run: yarn test
+      - name: Install dependences
+        run: yarn
+      - name: Executing Lint
+        run: yarn lint
+      - name: Executing Test
+        run: yarn test
