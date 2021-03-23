@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push:
+    branches:
+      - master
+
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    name: Install
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '13.x'
+      - run: yarn
+
+  test:
+    runs-on: ubuntu-latest
+    name: Test
+    needs: install
+    steps:
+      - run: yarn lint
+      - run: yarn test
