@@ -12,7 +12,8 @@ const items: string[] = [
   'PHP',
   '.NET',
   'C#',
-  'C++'
+  'C++',
+  'Ruby'
 ]
 
 const App = () => {
