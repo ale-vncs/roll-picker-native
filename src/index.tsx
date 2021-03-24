@@ -52,7 +52,6 @@ const RollPickerNative = ({
   );
 
   useEffect(() => {
-    console.log("re-render", props, selectStyle, containerStyle);
     const defaultSelectHeight = props.selectHeight || 20;
     const defaultContainerHeight = props.containerHeight || 200;
     setSelectHeight(defaultSelectHeight);

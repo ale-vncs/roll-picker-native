@@ -44,7 +44,6 @@ const App = () => {
         break
       }
     }
-    console.log('out', field, index)
   }, [])
 
   return (
