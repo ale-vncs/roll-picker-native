@@ -7,6 +7,7 @@ import {
   NativeScrollEvent,
   ViewStyle,
   TextStyle,
+  NativeScrollPoint,
 } from "react-native";
 import useStyles from "./styles";
 
@@ -104,6 +105,11 @@ const RollPickerNative = ({
     if (intervalFix && intervalFix.current) clearInterval(intervalFix.current);
   };
 
+  const getScrollIndex = (scrollY: NativeScrollPoint["y"]) => {
+    const y = Math.round(scrollY);
+    return Math.round(y / selectHeight);
+  };
+
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     checkIntervalFix();
     const y = e.nativeEvent.contentOffset.y;
@@ -121,9 +127,8 @@ const RollPickerNative = ({
 
   const onScrollEnd = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const y = Math.round(event.nativeEvent.contentOffset.y);
-      const currentIndex = Math.round(y / selectHeight);
       checkIntervalFix();
+      const currentIndex = getScrollIndex(event.nativeEvent.contentOffset.y);
       intervalFix.current = setTimeout(() => {
         if (props.onIndexChange) props.onIndexChange(currentIndex);
       }, defaultTimeOutFix);
@@ -165,20 +170,6 @@ const RollPickerNative = ({
         </View>
         <View
           style={[
-            {
-              position: "absolute",
-              flex: 1,
-              width: "100%",
-              backgroundColor:
-                containerStyle?.backgroundColor ||
-                classes.primaryScrollBox.backgroundColor,
-              height: selectHeight,
-              top: containerHeight / 2 - selectHeight / 2,
-            },
-          ]}
-        />
-        <View
-          style={[
             classes.secondaryScrollBox,
             selectStyle,
             {
@@ -193,6 +184,26 @@ const RollPickerNative = ({
           ]}
           pointerEvents="none"
         >
+          <View
+            style={{
+              position: "absolute",
+              height: removeLine ? selectHeight : selectHeight - 2,
+              width: "100%",
+              backgroundColor:
+                containerStyle?.backgroundColor ||
+                classes.primaryScrollBox.backgroundColor,
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                width: "100%",
+                backgroundColor:
+                  selectStyle?.backgroundColor ||
+                  classes.secondaryScrollBox.backgroundColor,
+              }}
+            />
+          </View>
           <ScrollView
             showsVerticalScrollIndicator={false}
             ref={secondaryScrollRef}
