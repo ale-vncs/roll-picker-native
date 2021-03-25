@@ -1,11 +1,12 @@
 import { StyleSheet } from "react-native";
 
 export default () => {
-  const fontSize = 22;
+  const fontSize = 15;
   return StyleSheet.create({
     mainContainer: {
       alignItems: "center",
       justifyContent: "center",
+      flex: 1,
     },
     auxMainContainer: {
       flex: 1,
