@@ -21,10 +21,10 @@ export interface RollPickerNativeProps {
 
   containerHeight?: number;
   selectHeight?: number;
-  itemStyle?: ViewStyle;
+  itemStyle?: Omit<ViewStyle, "height">;
   itemTextStyle?: TextStyle;
-  containerStyle?: ViewStyle;
-  selectStyle?: ViewStyle;
+  containerStyle?: Omit<ViewStyle, "height">;
+  selectStyle?: Omit<ViewStyle, "height">;
   selectTextStyle?: TextStyle;
   lineColor?: string;
   removeLine?: boolean;
