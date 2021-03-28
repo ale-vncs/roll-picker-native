@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import RollPickerNative from 'src/index'
-import { Text, View } from 'react-native'
+import { Text, TouchableOpacity, View } from 'react-native'
 
 const App = () => {
   const days = Array.from({ length: 30 }, (_, i) => (i + 1).toString())
@@ -29,7 +29,7 @@ const App = () => {
   const [month, setMonth] = useState(0)
   const [day, setDay] = useState(0)
 
-  const handleMonth = useCallback((field: string, index: number) => {
+  const handlePicker = useCallback((field: string, index: number) => {
     switch (field) {
       case 'month': {
         setMonth(index)
@@ -45,6 +45,10 @@ const App = () => {
       }
     }
   }, [])
+
+  const changeIndexToStart = (field: string) => {
+    handlePicker(field, 0)
+  }
 
   return (
     <View
@@ -65,7 +69,7 @@ const App = () => {
         <RollPickerNative
           items={months}
           index={month}
-          onIndexChange={(index: number) => handleMonth('month', index)}
+          onIndexChange={(index: number) => handlePicker('month', index)}
           selectHeight={35}
           containerHeight={250}
           selectTextStyle={{
@@ -75,7 +79,7 @@ const App = () => {
         <RollPickerNative
           items={days}
           index={day}
-          onIndexChange={(index: number) => handleMonth('day', index)}
+          onIndexChange={(index: number) => handlePicker('day', index)}
           selectHeight={35}
           containerHeight={250}
           selectTextStyle={{
@@ -85,7 +89,7 @@ const App = () => {
         <RollPickerNative
           items={years}
           index={year}
-          onIndexChange={(index: number) => handleMonth('year', index)}
+          onIndexChange={(index: number) => handlePicker('year', index)}
           selectHeight={35}
           containerHeight={250}
           selectTextStyle={{
@@ -93,6 +97,9 @@ const App = () => {
           }}
         />
       </View>
+      <TouchableOpacity onPress={() => changeIndexToStart('year')}>
+        <Text>Reset</Text>
+      </TouchableOpacity>
       <Text
         style={{
           paddingVertical: 25,

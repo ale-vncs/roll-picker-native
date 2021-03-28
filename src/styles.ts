@@ -1,35 +1,35 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native'
 
 export default () => {
-  const fontSize = 15;
+  const fontSize = 15
   return StyleSheet.create({
     mainContainer: {
-      alignItems: "center",
-      justifyContent: "center",
-      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      flex: 1
     },
     auxMainContainer: {
       flex: 1,
-      width: "100%",
+      width: '100%'
     },
     primaryScrollBox: {
-      width: "100%",
-      backgroundColor: "#0088ff",
+      width: '100%',
+      backgroundColor: '#0088ff'
     },
     primaryText: {
       fontSize,
-      color: "#dddddd",
+      color: '#dddddd'
     },
     secondaryScrollBox: {
-      backgroundColor: "#ffffff",
-      alignSelf: "center",
-      width: "100%",
+      backgroundColor: '#ffffff',
+      alignSelf: 'center',
+      width: '100%',
       borderTopWidth: 1,
-      borderBottomWidth: 1,
+      borderBottomWidth: 1
     },
     secondaryText: {
       fontSize,
-      color: "#4a4a4a",
-    },
-  });
-};
+      color: '#4a4a4a'
+    }
+  })
+}

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   ScrollView,
   View,
@@ -7,27 +7,27 @@ import {
   NativeScrollEvent,
   ViewStyle,
   TextStyle,
-  NativeScrollPoint,
-} from "react-native";
-import useStyles from "./styles";
+  NativeScrollPoint
+} from 'react-native'
+import useStyles from './styles'
 
 export interface RollPickerNativeProps {
-  items: string[];
-  label?: string;
-  labelStyle?: TextStyle;
-  index: number;
+  items: string[]
+  label?: string
+  labelStyle?: TextStyle
+  index: number
 
-  onIndexChange?(index: number): void;
+  onIndexChange?(index: number): void
 
-  containerHeight?: number;
-  selectHeight?: number;
-  itemStyle?: Omit<ViewStyle, "height">;
-  itemTextStyle?: TextStyle;
-  containerStyle?: Omit<ViewStyle, "height">;
-  selectStyle?: Omit<ViewStyle, "height">;
-  selectTextStyle?: TextStyle;
-  lineColor?: string;
-  removeLine?: boolean;
+  containerHeight?: number
+  selectHeight?: number
+  itemStyle?: Omit<ViewStyle, 'height'>
+  itemTextStyle?: TextStyle
+  containerStyle?: Omit<ViewStyle, 'height'>
+  selectStyle?: Omit<ViewStyle, 'height'>
+  selectTextStyle?: TextStyle
+  lineColor?: string
+  removeLine?: boolean
 }
 
 const RollPickerNative = ({
@@ -37,104 +37,104 @@ const RollPickerNative = ({
   removeLine = false,
   ...props
 }: RollPickerNativeProps) => {
-  const classes = useStyles();
-  const defaultTimeOutFix = 380;
-  const intervalFix = useRef<NodeJS.Timeout>();
+  const classes = useStyles()
+  const defaultTimeOutFix = 380
+  const intervalFix = useRef<NodeJS.Timeout>()
 
-  const primaryScrollRef = useRef<ScrollView>(null);
-  const secondaryScrollRef = useRef<ScrollView>(null);
+  const primaryScrollRef = useRef<ScrollView>(null)
+  const secondaryScrollRef = useRef<ScrollView>(null)
 
-  const [selectHeight, setSelectHeight] = useState(props.selectHeight || 20);
+  const [selectHeight, setSelectHeight] = useState(props.selectHeight || 20)
   const [containerHeight, setContainerHeight] = useState(
     props.containerHeight || 200
-  );
+  )
   const [auxContainerHeight, setAuxContainerHeight] = useState(
     (containerHeight - selectHeight) / 2
-  );
+  )
 
   useEffect(() => {
-    const defaultSelectHeight = props.selectHeight || 20;
-    const defaultContainerHeight = props.containerHeight || 200;
-    setSelectHeight(defaultSelectHeight);
-    setContainerHeight(defaultContainerHeight);
-    setAuxContainerHeight((defaultContainerHeight - defaultSelectHeight) / 2);
-  }, [props.selectHeight, props.containerHeight]);
+    const defaultSelectHeight = props.selectHeight || 20
+    const defaultContainerHeight = props.containerHeight || 200
+    setSelectHeight(defaultSelectHeight)
+    setContainerHeight(defaultContainerHeight)
+    setAuxContainerHeight((defaultContainerHeight - defaultSelectHeight) / 2)
+  }, [props.selectHeight, props.containerHeight])
 
   useEffect(() => {
-    selectTo(props.index);
-  }, [selectHeight, containerHeight]);
+    selectTo(props.index)
+  }, [selectHeight, containerHeight, props.index])
 
   const getItem = (isPrimary: boolean) => {
     if (items.length === 0) {
-      return null;
+      return null
     }
     const primaryTextStyle: TextStyle = {
       fontSize: classes.primaryText.fontSize,
       color: classes.primaryText.color,
-      ...(props.itemTextStyle && props.itemTextStyle),
-    };
+      ...(props.itemTextStyle && props.itemTextStyle)
+    }
     const secondaryTextStyle: TextStyle = {
       fontSize: classes.secondaryText.fontSize,
       color: classes.secondaryText.color,
-      ...(props.selectTextStyle && props.selectTextStyle),
-    };
+      ...(props.selectTextStyle && props.selectTextStyle)
+    }
     return items.map((item, i) => {
       return (
         <View
           key={i}
           style={[
             {
-              justifyContent: "center",
-              alignItems: "center",
+              justifyContent: 'center',
+              alignItems: 'center'
             },
             isPrimary && props.itemStyle,
             {
-              height: selectHeight,
-            },
+              height: selectHeight
+            }
           ]}
         >
           <Text style={isPrimary ? primaryTextStyle : secondaryTextStyle}>
             {item}
           </Text>
         </View>
-      );
-    });
-  };
+      )
+    })
+  }
 
   const checkIntervalFix = () => {
-    if (intervalFix && intervalFix.current) clearInterval(intervalFix.current);
-  };
+    if (intervalFix && intervalFix.current) clearInterval(intervalFix.current)
+  }
 
-  const getScrollIndex = (scrollY: NativeScrollPoint["y"]) => {
-    const y = Math.round(scrollY);
-    return Math.round(y / selectHeight);
-  };
+  const getScrollIndex = (scrollY: NativeScrollPoint['y']) => {
+    const y = Math.round(scrollY)
+    return Math.round(y / selectHeight)
+  }
 
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    checkIntervalFix();
-    const y = e.nativeEvent.contentOffset.y;
+    checkIntervalFix()
+    const y = e.nativeEvent.contentOffset.y
     if (secondaryScrollRef && secondaryScrollRef.current) {
-      secondaryScrollRef.current.scrollTo({ y, animated: false });
+      secondaryScrollRef.current.scrollTo({ y, animated: false })
     }
-  };
+  }
 
   const selectTo = (index: number) => {
-    const y = index * selectHeight;
+    const y = index * selectHeight
     if (primaryScrollRef && primaryScrollRef.current) {
-      primaryScrollRef.current.scrollTo({ y, animated: false });
+      primaryScrollRef.current.scrollTo({ y, animated: false })
     }
-  };
+  }
 
   const onScrollEnd = useCallback(
     (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      checkIntervalFix();
-      const currentIndex = getScrollIndex(event.nativeEvent.contentOffset.y);
+      checkIntervalFix()
+      const currentIndex = getScrollIndex(event.nativeEvent.contentOffset.y)
       intervalFix.current = setTimeout(() => {
-        if (props.onIndexChange) props.onIndexChange(currentIndex);
-      }, defaultTimeOutFix);
+        if (props.onIndexChange) props.onIndexChange(currentIndex)
+      }, defaultTimeOutFix)
     },
     [intervalFix.current, selectHeight]
-  );
+  )
 
   return (
     <View style={[classes.mainContainer, { height: containerHeight }]}>
@@ -147,8 +147,8 @@ const RollPickerNative = ({
             classes.primaryScrollBox,
             containerStyle,
             {
-              height: containerHeight,
-            },
+              height: containerHeight
+            }
           ]}
         >
           <ScrollView
@@ -160,7 +160,7 @@ const RollPickerNative = ({
             scrollEventThrottle={16}
             snapToInterval={selectHeight}
             nestedScrollEnabled={false}
-            snapToAlignment={"center"}
+            snapToAlignment={'center'}
             snapToOffsets={items.map((item, index) => selectHeight * index)}
           >
             <View style={{ height: auxContainerHeight }} />
@@ -173,34 +173,34 @@ const RollPickerNative = ({
             classes.secondaryScrollBox,
             selectStyle,
             {
-              borderColor: props.lineColor || "white",
+              borderColor: props.lineColor || 'white',
               height: selectHeight,
               marginTop: -(containerHeight / 2 + selectHeight / 2),
               ...(removeLine && {
                 borderBottomWidth: 0,
-                borderTopWidth: 0,
-              }),
-            },
+                borderTopWidth: 0
+              })
+            }
           ]}
-          pointerEvents="none"
+          pointerEvents='none'
         >
           <View
             style={{
-              position: "absolute",
+              position: 'absolute',
               height: removeLine ? selectHeight : selectHeight - 2,
-              width: "100%",
+              width: '100%',
               backgroundColor:
                 containerStyle?.backgroundColor ||
-                classes.primaryScrollBox.backgroundColor,
+                classes.primaryScrollBox.backgroundColor
             }}
           >
             <View
               style={{
                 flex: 1,
-                width: "100%",
+                width: '100%',
                 backgroundColor:
                   selectStyle?.backgroundColor ||
-                  classes.secondaryScrollBox.backgroundColor,
+                  classes.secondaryScrollBox.backgroundColor
               }}
             />
           </View>
@@ -216,7 +216,7 @@ const RollPickerNative = ({
         </View>
       </View>
     </View>
-  );
-};
+  )
+}
 
-export default RollPickerNative;
+export default RollPickerNative
