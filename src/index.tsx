@@ -39,25 +39,25 @@ const RollPickerNative = ({
 }: RollPickerNativeProps) => {
   const classes = useStyles()
   const defaultTimeOutFix = 380
+  const defaultSelectHeight = 20
+  const defaultContainerHeight = 200
   const intervalFix = useRef<NodeJS.Timeout>()
 
   const primaryScrollRef = useRef<ScrollView>(null)
   const secondaryScrollRef = useRef<ScrollView>(null)
 
-  const [selectHeight, setSelectHeight] = useState(props.selectHeight || 20)
-  const [containerHeight, setContainerHeight] = useState(
-    props.containerHeight || 200
-  )
+  const [selectHeight, setSelectHeight] = useState(defaultSelectHeight)
+  const [containerHeight, setContainerHeight] = useState(defaultContainerHeight)
   const [auxContainerHeight, setAuxContainerHeight] = useState(
     (containerHeight - selectHeight) / 2
   )
 
   useEffect(() => {
-    const defaultSelectHeight = props.selectHeight || 20
-    const defaultContainerHeight = props.containerHeight || 200
-    setSelectHeight(defaultSelectHeight)
-    setContainerHeight(defaultContainerHeight)
-    setAuxContainerHeight((defaultContainerHeight - defaultSelectHeight) / 2)
+    const selectHeight = props.selectHeight || defaultSelectHeight
+    const containerHeight = props.containerHeight || defaultContainerHeight
+    setSelectHeight(selectHeight)
+    setContainerHeight(containerHeight)
+    setAuxContainerHeight((containerHeight - selectHeight) / 2)
   }, [props.selectHeight, props.containerHeight])
 
   useEffect(() => {
@@ -121,7 +121,7 @@ const RollPickerNative = ({
   const selectTo = (index: number) => {
     const y = index * selectHeight
     if (primaryScrollRef && primaryScrollRef.current) {
-      primaryScrollRef.current.scrollTo({ y, animated: false })
+      primaryScrollRef.current.scrollTo({ y, animated: true })
     }
   }
 
