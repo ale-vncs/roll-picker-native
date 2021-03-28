@@ -1,11 +1,13 @@
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 ![GitHub](https://img.shields.io/github/license/ale-vncs/roll-picker-native)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+![npm](https://img.shields.io/npm/v/roll-picker-native)
 
 # roll-picker-native
 
-An alternative to ScrollView on React Native.
+An interactive alternative to Picker.
 
-The `roll-picker-native` is just a way better to see a ScrollView with some customizations.
+The `roll-picker-native` is just a way better to see a Picker with some customizations.
 
 ### Examples
 ![Example 1](.github/images/example_1.gif)
